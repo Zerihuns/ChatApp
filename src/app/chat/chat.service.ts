@@ -1,6 +1,7 @@
 import { Message } from './model/Message';
 import { EventEmitter,Injectable } from '@angular/core';
 import * as signalR from "@microsoft/signalr"
+import { environment } from './../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class ChatService {
 
   ){
     this.hubConnection = new signalR.HubConnectionBuilder()
-    .withUrl('https://localhost:7096/ChatHub')
+    .withUrl(environment.ServerURL+'/ChatHub')
     .build();
     this.registerOnServerEvents();
   }
