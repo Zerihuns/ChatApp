@@ -1,0 +1,21 @@
+
+
+<div class="chat">
+  <div class="chat-title">
+    <h1>{{username}}</h1>
+    <h2>online</h2>
+    <figure class="avatar">
+      <img src="{{userAvater}}" /></figure>
+  </div>
+  <div class="messages">
+    <div class="messages-content"  malihu-scrollbar [scrollbarOptions]="scrollbarOptions">
+    </div>
+  </div>
+  <div class="message-box">
+    <textarea type="text" [(ngModel)]="inputMessage" (keydown.enter)="insertMessage(chatInputMessage.value)" class="message-input" placeholder="Type message..." #chatInputMessage></textarea>
+    <button type="submit" class="message-submit" (click)="insertMessage(chatInputMessage.value)">Send</button>
+  </div>
+
+</div>
+
+
