@@ -8,12 +8,23 @@
       <img src="{{userAvater}}" /></figure>
   </div>
   <div class="messages">
-    <div class="messages-content"  malihu-scrollbar [scrollbarOptions]="scrollbarOptions">
+    <div class="messages-content" >
+      <ng-container *ngFor="let Message of Messages">
+        <div *ngIf="Message.Personal; else ReciveMessage" class="message new message-personal" appMsgreplay="Message.ID">{{Message?.Msg}}</div>
+        <ng-template  #ReciveMessage>
+          <div class="message new">
+            <figure class="avatar">
+              <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/156381/profile/profile-80.jpg">
+            </figure>
+            {{Message?.Msg}}
+          </div>
+        </ng-template>
+      </ng-container>
     </div>
   </div>
   <div class="message-box">
-    <textarea type="text" [(ngModel)]="inputMessage" (keydown.enter)="insertMessage(chatInputMessage.value)" class="message-input" placeholder="Type message..." #chatInputMessage></textarea>
-    <button type="submit" class="message-submit" (click)="insertMessage(chatInputMessage.value)">Send</button>
+    <input type="text" class="message-input" [(ngModel)]="inputMessage" (keyup.enter)="insertMessage()" placeholder="Type message...">
+    <button type="submit" class="message-submit" (click)="insertMessage()">Send</button>
   </div>
 
 </div>

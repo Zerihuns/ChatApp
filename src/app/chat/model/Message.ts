@@ -1,9 +1,8 @@
 
-export class  Message {
-  constructor(
-    public Username : string,
-    public Message : string
-  ){
-
-  }
+export interface  Message {
+  ID? : Number
+  Username : string
+  TypingState : boolean
+  Msg : string
+  Personal : boolean
 }

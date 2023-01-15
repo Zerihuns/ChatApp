@@ -114,7 +114,7 @@ Message Box
     width: 265px;
   }
 
-  textarea:focus:-webkit-placeholder{
+  input:focus:-webkit-placeholder{
       color: transparent;
   }
 
@@ -156,10 +156,24 @@ Messages
     position: absolute;
     top: 0;
     left: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
     height: 101%;
     width: 100%;
   }
+  .messages-content::-webkit-scrollbar-track {
 
+    background-color: transparent;
+  }
+  .messages-content::-webkit-scrollbar{
+    width: 6px;
+  }
+  .messages-content::-webkit-scrollbar-thumb {
+    border-radius: 7px;
+    background: #0a120e;
+    border: none;
+  }
 
   .message {
     clear: both;
@@ -170,7 +184,7 @@ Messages
     margin: 8px 0;
     font-size: 11px;
     line-height: 1.4;
-    margin-left: 35px;
+    margin-left: 45px;
     position: relative;
     text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
 
@@ -209,13 +223,26 @@ Messages
       }
     }
 
+    &.messages .message.message-with-replay{
+      float: right;
+      background-color: transparent;
+    }
+    &.messages .message.message-replay{
+      position: absolute;
+      top: -20px;
+      float: right;
+      margin-right: 0px;
+      right: auto;
+      text-align: right;
+    }
+
     &.message-personal {
       float: right;
       color: #fff;
       text-align: right;
       background: linear-gradient(120deg, #248A52, #257287);
       border-radius: 10px 10px 0 10px;
-
+      margin-right: 5px;
       &::before {
         left: auto;
         right: 0;

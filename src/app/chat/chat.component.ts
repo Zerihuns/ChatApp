@@ -2,12 +2,12 @@ import { ChatService } from './chat.service';
 import {
   AfterViewInit, Component,
   ElementRef,
-  NgZone,
-  OnDestroy, OnInit,  } from '@angular/core';
+  NgZone,QueryList,
+  OnDestroy, OnInit, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MalihuScrollbarService } from 'ngx-malihu-scrollbar';
 import { Message } from './model/Message';
-
+import { AvatarService } from './avatar.service'
+import { MsgreplayDirective } from './msgreplay.directive';
 
 
 @Component({
@@ -17,23 +17,26 @@ import { Message } from './model/Message';
 
 })
 export class ChatComponent  implements OnInit,AfterViewInit, OnDestroy{
-
-  public scrollbarOptions: any = { axis: 'y', theme: 'my-theme'}
+  Messages:Message[] = []
   username = ''
   inputMessage = ''
   userAvater = ''
 
   constructor(
-    private mScrollbarService: MalihuScrollbarService,
     private elementRef:ElementRef,
     private _chatService : ChatService,
     private _ngZone: NgZone,
     private router: Router,
-    private param : ActivatedRoute
+    private param : ActivatedRoute,
+    private _avatarService :AvatarService
     ) {
-      this.mScrollbarService.update('#scrollContainer')
       this.subscribeToEvents()
-}
+
+    }
+
+  @ViewChildren(MsgreplayDirective) scrollableMsg?: QueryList<MsgreplayDirective>
+
+
 
   ngOnDestroy(): void {}
   ngAfterViewInit(): void {
@@ -45,7 +48,7 @@ export class ChatComponent  implements OnInit,AfterViewInit, OnDestroy{
       let username = params.get('username')
       if(username){
         this.username = username
-        this.userAvater = generateAvatar(username[0], "white", "#009578")
+        this.userAvater = this._avatarService.GenerateAvatar(username[0], "white", "#009578")
         this._chatService.StartConnection(username);
       }else{
         console.log("Username unknown")
@@ -56,31 +59,36 @@ export class ChatComponent  implements OnInit,AfterViewInit, OnDestroy{
     })
   }
 
-  insertMessage(message:string){
-    let elemnt = this.elementRef.nativeElement.querySelector('.mCSB_container');
-    this.updateScrollbar()
+  async insertMessage(){
+    if(this.inputMessage){
 
-    elemnt.insertAdjacentHTML('beforeend', SendMessageView(message))
+      this.Messages.push({
+        Username: this.username,
+        Msg: this.inputMessage,
+        TypingState: false,
+        Personal: true
+      })
 
-    this._chatService.sendMessage(message);
-    this.updateScrollbar()
-    this.inputMessage = ''
+      try{
+        await this._chatService.sendMessage(this.inputMessage);
+      }catch{}
+
+      this.inputMessage = ''
+      this.updateScrollbar()
+    }
   }
 
   updateScrollbar() {
-    this.mScrollbarService.scrollTo('#scrollContainer', 'bottom', {
-      scrollInertia: 10,
-      timeout: 0
-    })
+
   }
 
   private subscribeToEvents(): void {
     this._chatService.messageReceived.subscribe((message: Message) => {
       this._ngZone.run(() => {
-        let elemnt = this.elementRef.nativeElement.querySelector('.mCSB_container');
-        elemnt.insertAdjacentHTML('beforeend', SendLoad(message.Username[0]))
+        let elemnt = this.elementRef.nativeElement.querySelector('.messages-content');
+        elemnt.insertAdjacentHTML('beforeend', this.SendLoad(message.Username[0]))
         this.updateScrollbar()
-        this.sendMessageWithLoadding(message.Message,message.Username)
+        this.sendMessageWithLoadding(message.Msg,message.Username)
         console.log(message)
       });
     });
@@ -89,61 +97,44 @@ export class ChatComponent  implements OnInit,AfterViewInit, OnDestroy{
     setTimeout(()=>{
       let load = this.elementRef.nativeElement.querySelector('.message.loading');
       load.remove()
-      let d1 = this.elementRef.nativeElement.querySelector('.mCSB_container');
-      d1.insertAdjacentHTML('beforeend', MessageReceived(msg,username[0]))
+      this.Messages.push({
+        Username: username,
+        TypingState: false,
+        Msg: msg,
+        Personal: false
+      })
       this.updateScrollbar()
     },1000 + (Math.random() * 10) * 100)
+  }
+  SendLoad(ava:string):string{
+    return`
+    <div class="message loading new">
+      <figure class="avatar">
+        <img src=${this._avatarService.GenerateAvatar(ava, "white", "#009578")} />
+      </figure>
+      <span></span>
+    </div>
+    `
   }
 }
 
 
 
-function MessageReceived(msg:String,ava :string):String{
-  return `
-  <div class="message new">
-  <figure class="avatar">
-    <img src=${generateAvatar(ava, "white", "#009578")}>
-  </figure>${msg}</div>
-  `
-}
 
 function SendMessageView(msg:string):string{
   return `<div class="message new message-personal">${msg}</div>`
 }
 
-function generateAvatar(text:string, foregroundColor:string, backgroundColor:string) {
-  let canvas = document.createElement("canvas");
-  let context = canvas.getContext("2d");
-
-  canvas.width = 250;
-  canvas.height = 250;
-
-  // Draw background
-  if(context){
-    context.fillStyle = backgroundColor;
-    context.fillRect(0, 0, canvas.width, canvas.height);
-
-     // Draw text
-    context.font = "bold 100px Comic Sans MS";
-    context.fillStyle = foregroundColor;
-    context.textAlign = "center";
-    context.textBaseline = "middle";
-    context.fillText(text.toUpperCase(), canvas.width / 2, canvas.height / 2);
-  }
 
 
 
 
-  return canvas.toDataURL("image/png");
-}
+/*
 
-function SendLoad(ava:string):string{
-  return`
-  <div class="message loading new">
-    <figure class="avatar">
-      <img src=${generateAvatar(ava, "white", "#009578")} />
-    </figure>
-    <span></span>
+  <div class="message message-with-replay">
+  <div class="message message-replay">..</div>
+  <div class="message message-personal"> ${msg} </div>
   </div>
-  `
-}
+
+
+  */

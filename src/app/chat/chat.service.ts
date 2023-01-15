@@ -27,8 +27,8 @@ export class ChatService {
     this.registerOnServerEvents();
   }
 
-  sendMessage(message : string) {
-    this.hubConnection.invoke('SendMessage', this.username ,message);
+  async sendMessage(message : string) {
+   await this.hubConnection.invoke('SendMessage', this.username ,message);
   }
   sendJoinMessage(username : string) {
   this.hubConnection.invoke("Register",username)
@@ -55,7 +55,7 @@ export class ChatService {
     public registerOnServerEvents = () => {
       this.hubConnection.on('ReceiveMessage', (username,message) => {
         if(username != this.username){
-          this.messageReceived.emit({Username:username,Message:message});
+          this.messageReceived.emit({Username:username,TypingState: false,Msg:message,Personal:false});
           console.log(username +" : " + message );
         }
       });
