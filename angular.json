@@ -30,14 +30,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              "node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css"
-
-            ],
-            "scripts": [
-              "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"
-            ]
+              "src/styles.scss"],
+            "scripts": []
           },
           "configurations": {
             "production": {

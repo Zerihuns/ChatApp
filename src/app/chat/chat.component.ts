@@ -3,7 +3,7 @@ import {
   AfterViewInit, Component,
   ElementRef,
   NgZone,QueryList,
-  OnDestroy, OnInit, ViewChildren } from '@angular/core';
+  OnDestroy, OnInit, ViewChildren, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Message } from './model/Message';
 import { AvatarService } from './avatar.service'
@@ -21,6 +21,8 @@ export class ChatComponent  implements OnInit,AfterViewInit, OnDestroy{
   username = ''
   inputMessage = ''
   userAvater = ''
+  @ViewChild('messagesbox') private myScrollContainer?: ElementRef;
+  @ViewChildren(MsgreplayDirective) scrollableMsg?: QueryList<MsgreplayDirective>
 
   constructor(
     private elementRef:ElementRef,
@@ -33,9 +35,6 @@ export class ChatComponent  implements OnInit,AfterViewInit, OnDestroy{
       this.subscribeToEvents()
 
     }
-
-  @ViewChildren(MsgreplayDirective) scrollableMsg?: QueryList<MsgreplayDirective>
-
 
 
   ngOnDestroy(): void {}
@@ -57,29 +56,41 @@ export class ChatComponent  implements OnInit,AfterViewInit, OnDestroy{
       }
 
     })
+
+    this.Messages.push({
+      Username: 'Biruk',
+      TypingState: false,
+      Msg: 'Ethiopia, in the Horn of Africa, is a rugged, landlocked country split by the Great Rift Valley. With archaeological finds dating back more than 3 million years, it’s a place of ancient culture. Among its important sites are Lalibela with its rock-cut Christian churches from the 12th–13th centuries. Aksum is the ruins of an ancient city with obelisks, tombs, castles and Our Lady Mary of Zion church.',
+      Personal: false
+    })
   }
 
-  async insertMessage(){
-    if(this.inputMessage){
-
+  async insertMessage(...args: KeyboardEvent[]) {
+    if (args.length > 0){
+      if(!((args[0].key == "Enter" || args[0].keyCode == 10) && args[0].ctrlKey))
+        return
+    }
+    if (this.inputMessage) {
       this.Messages.push({
         Username: this.username,
         Msg: this.inputMessage,
         TypingState: false,
         Personal: true
-      })
+      });
 
-      try{
+      try {
         await this._chatService.sendMessage(this.inputMessage);
-      }catch{}
+      } catch { }
 
-      this.inputMessage = ''
-      this.updateScrollbar()
+      this.inputMessage = '';
+      this.updateScrollbar();
     }
   }
 
   updateScrollbar() {
-
+    if(this.myScrollContainer){
+      this.myScrollContainer.nativeElement.scrollTo(0, 0);
+    }
   }
 
   private subscribeToEvents(): void {
@@ -116,13 +127,6 @@ export class ChatComponent  implements OnInit,AfterViewInit, OnDestroy{
     </div>
     `
   }
-}
-
-
-
-
-function SendMessageView(msg:string):string{
-  return `<div class="message new message-personal">${msg}</div>`
 }
 
 

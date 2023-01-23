@@ -105,10 +105,14 @@ Message Box
     background: none;
     border: none;
     outline: none!important;
+    overflow: hidden;
     resize: none;
     color: rgba(255, 255, 255, .7);
     font-size: 11px;
+    min-height: 17px;
+    max-height: 200px;
     height: 17px;
+    resize: none;
     margin: 0;
     padding-right: 20px;
     width: 265px;
@@ -121,7 +125,7 @@ Message Box
   & .message-submit {
     position: absolute;
     z-index: 1;
-    top: 9px;
+    bottom: 9px;
     right: 10px;
     color: #fff;
     border: none;
@@ -157,8 +161,7 @@ Messages
     top: 0;
     left: 0;
     overflow-x: hidden;
-    overflow-y: auto;
-    scrollbar-gutter: stable;
+    overflow-y: scroll;
     height: 101%;
     width: 100%;
   }
@@ -182,6 +185,7 @@ Messages
     border-radius: 10px 10px 10px 0;
     background: rgba(0, 0, 0, .3);
     margin: 8px 0;
+    text-align: justify;
     font-size: 11px;
     line-height: 1.4;
     margin-left: 45px;
@@ -239,7 +243,7 @@ Messages
     &.message-personal {
       float: right;
       color: #fff;
-      text-align: right;
+      text-align: justify;
       background: linear-gradient(120deg, #248A52, #257287);
       border-radius: 10px 10px 0 10px;
       margin-right: 5px;
@@ -258,6 +262,8 @@ Messages
     }
 
     &.new {
+      max-width: 225px;
+      word-wrap: break-word;
       transform: scale(0);
       transform-origin: 0 0;
       animation: bounce 500ms linear both;

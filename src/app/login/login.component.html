@@ -1,0 +1,40 @@
+<div class="chat">
+  <div class="login-Container">
+
+    <div class="login-wrap p-0">
+      <h3 class="mb-4 text-center">Have an account?</h3>
+      <form  class="signin-form" [formGroup]="form">
+        <div class="form-group">
+          <input type="text" class="form-control"  formControlName="username"  (keyup.enter)="JoinChat()"  placeholder="Username">
+        </div>
+
+        <div class="form-group">
+          <input id="password-field" formControlName="password" type="password" class="form-control"
+            placeholder="Password" required>
+          <span toggle="#password-field" class="fa fa-fw fa-eye field-icon
+            toggle-password"></span>
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="form-control btn btn-primary submit
+            px-3" (click)="JoinChat()">Sign In</button>
+        </div>
+
+        <div class="form-group d-md-flex">
+
+          <div class="w-50">
+            <label class="checkbox-wrap checkbox-primary">Remember Me
+              <input formControlName="checkbox" type="checkbox" checked>
+              <span class="checkmark"></span>
+            </label>
+          </div>
+
+          <div class="Forgot">
+            <a href="#" style="color: #fff">Forgot Password</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>

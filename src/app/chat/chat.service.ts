@@ -22,7 +22,10 @@ export class ChatService {
 
   ){
     this.hubConnection = new signalR.HubConnectionBuilder()
-    .withUrl(environment.ServerURL+'/ChatHub')
+    .withUrl(environment.ServerURL+'/ChatHub', {
+      skipNegotiation: true,
+      transport: signalR.HttpTransportType.WebSockets
+    })
     .build();
     this.registerOnServerEvents();
   }

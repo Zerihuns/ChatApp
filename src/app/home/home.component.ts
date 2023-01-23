@@ -7,8 +7,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
+  username = ''
   constructor( private router: Router){}
-  JoinChat(username :string){
-    this.router.navigate(['/chat',username]);
+  JoinChat(){
+    this.router.navigate(['/chat',this.username]);
   }
 }

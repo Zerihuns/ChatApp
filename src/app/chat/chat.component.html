@@ -8,7 +8,7 @@
       <img src="{{userAvater}}" /></figure>
   </div>
   <div class="messages">
-    <div class="messages-content" >
+    <div class="messages-content" #messagesbox>
       <ng-container *ngFor="let Message of Messages">
         <div *ngIf="Message.Personal; else ReciveMessage" class="message new message-personal" appMsgreplay="Message.ID">{{Message?.Msg}}</div>
         <ng-template  #ReciveMessage>
@@ -23,10 +23,17 @@
     </div>
   </div>
   <div class="message-box">
-    <input type="text" class="message-input" [(ngModel)]="inputMessage" (keyup.enter)="insertMessage()" placeholder="Type message...">
+    <!-- <input type="text" class="message-input" [(ngModel)]="inputMessage" (keyup.enter)="insertMessage()" placeholder="Type message..."> -->
+    <textarea type="text"
+    class="message-input"
+    autocomplete="off"
+    [(ngModel)]="inputMessage"
+    placeholder="Type message..."
+    (keydown)="insertMessage($event)"
+    appTextareaAutoresizeDirective></textarea>
+
     <button type="submit" class="message-submit" (click)="insertMessage()">Send</button>
   </div>
 
 </div>
-
 
