@@ -9,7 +9,10 @@ const routes: Routes = [
   {path: '', component: ChatComponent, canActivate: [AuthGuard] },
  // {path : 'chat/:username', component : ChatComponent},
   {path : 'home', component : HomeComponent},
-  {path : "login",component : LoginComponent}
+  {path : "login",component : LoginComponent},
+
+  // otherwise redirect to home
+   { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

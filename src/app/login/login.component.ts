@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router,ActivatedRoute } from '@angular/router';
-import { AlertService ,AccountService} from '@app/_services';
+import { AccountService } from '@app/_services';
+import { NgToastService } from 'ng-angular-popup';
 
 import { first } from 'rxjs/operators';
 
@@ -22,28 +23,20 @@ export class LoginComponent {
 
   constructor(
     private router: Router,
-    private alertService: AlertService,
     private accountService: AccountService,
     private route: ActivatedRoute,
-
+    private toast: NgToastService
     ){
 
 
     }
-
-
-//  JoinChat(){
-//    let username : string = this.form.value.username
-//    this.router.navigate(['/chat',username]);
-//  }
 
   get f() { return this.form.controls; }
 
   onSubmit() {
       this.submitted = true;
 
-      // reset alerts on submit
-      this.alertService.clear();
+
 
       // stop here if form is invalid
       if (this.form.invalid) {
@@ -60,7 +53,7 @@ export class LoginComponent {
                   this.router.navigateByUrl(returnUrl);
               },
               error: error => {
-                  this.alertService.error(error);
+                  this.toast.error({detail:'Error',summary:error, duration:3000 ,position:'tr'})
                   this.loading = false;
               }
           });

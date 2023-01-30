@@ -12,30 +12,31 @@ import { TextareaAutoresizeDirectiveDirective } from './chat/textarea-autoresize
 import { LoginComponent } from './login/login.component';
 import { HttpClientModule , HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
-
+import {NgToastModule} from 'ng-angular-popup';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    ChatComponent,
-    HomeComponent,
-    MsgreplayDirective,
-    TextareaAutoresizeDirectiveDirective,
-    LoginComponent,
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AppRoutingModule,
-    CommonModule,
-    HttpClientModule
-  ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    ChatService
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        ChatComponent,
+        HomeComponent,
+        MsgreplayDirective,
+        TextareaAutoresizeDirectiveDirective,
+        LoginComponent,
+    ],
+    providers: [
+        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+        ChatService
+    ],
+    bootstrap: [AppComponent],
+    imports: [
+        NgToastModule,
+        BrowserModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AppRoutingModule,
+        CommonModule,
+        HttpClientModule,
+    ]
 })
 export class AppModule { }
