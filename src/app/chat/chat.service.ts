@@ -1,4 +1,4 @@
-import { Message } from './model/Message';
+import { Message } from '../_models/Message';
 import { EventEmitter,Injectable } from '@angular/core';
 import * as signalR from "@microsoft/signalr"
 import { environment } from './../../environments/environment';

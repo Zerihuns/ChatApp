@@ -21,6 +21,7 @@
     "@microsoft/signalr": "^7.0.2",
     "jquery": "^3.6.3",
     "rxjs": "~7.5.0",
+    "rxjs-observable": "^0.0.7",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"
   },

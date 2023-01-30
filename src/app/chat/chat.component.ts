@@ -5,9 +5,11 @@ import {
   NgZone,QueryList,
   OnDestroy, OnInit, ViewChildren, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Message } from './model/Message';
-import { AvatarService } from './avatar.service'
+import { Message } from '../_models/Message';
+import { AvatarService } from '../_services/avatar.service'
 import { MsgreplayDirective } from './msgreplay.directive';
+import { AccountService } from '@app/_services';
+import { User } from '@app/_models';
 
 
 @Component({
@@ -18,7 +20,8 @@ import { MsgreplayDirective } from './msgreplay.directive';
 })
 export class ChatComponent  implements OnInit,AfterViewInit, OnDestroy{
   Messages:Message[] = []
-  username = ''
+  user: User | null;
+  username = 'D'
   inputMessage = ''
   userAvater = ''
   @ViewChild('messagesbox') private myScrollContainer?: ElementRef;
@@ -30,9 +33,11 @@ export class ChatComponent  implements OnInit,AfterViewInit, OnDestroy{
     private _ngZone: NgZone,
     private router: Router,
     private param : ActivatedRoute,
-    private _avatarService :AvatarService
+    private _avatarService :AvatarService,
+    private accountService: AccountService
     ) {
       this.subscribeToEvents()
+      this.user = this.accountService.userValue;
 
     }
 
@@ -43,8 +48,9 @@ export class ChatComponent  implements OnInit,AfterViewInit, OnDestroy{
   }
 
   ngOnInit(): void {
-    this.param.paramMap.subscribe(params =>{
-      let username = params.get('username')
+
+      let username = this.accountService.userValue?.username
+      console.log("Active UserName : "+this.accountService.userValue?.username);
       if(username){
         this.username = username
         this.userAvater = this._avatarService.GenerateAvatar(username[0], "white", "#009578")
@@ -55,14 +61,6 @@ export class ChatComponent  implements OnInit,AfterViewInit, OnDestroy{
 
       }
 
-    })
-
-    this.Messages.push({
-      Username: 'Biruk',
-      TypingState: false,
-      Msg: 'Ethiopia, in the Horn of Africa, is a rugged, landlocked country split by the Great Rift Valley. With archaeological finds dating back more than 3 million years, it’s a place of ancient culture. Among its important sites are Lalibela with its rock-cut Christian churches from the 12th–13th centuries. Aksum is the ruins of an ancient city with obelisks, tombs, castles and Our Lady Mary of Zion church.',
-      Personal: false
-    })
   }
 
   async insertMessage(...args: KeyboardEvent[]) {
@@ -75,7 +73,8 @@ export class ChatComponent  implements OnInit,AfterViewInit, OnDestroy{
         Username: this.username,
         Msg: this.inputMessage,
         TypingState: false,
-        Personal: true
+        Personal: true,
+        Avatar : ""
       });
 
       try {
@@ -112,11 +111,13 @@ export class ChatComponent  implements OnInit,AfterViewInit, OnDestroy{
         Username: username,
         TypingState: false,
         Msg: msg,
-        Personal: false
+        Personal: false,
+        Avatar : this._avatarService.GenerateAvatar(username[0], "white", "#009578")
       })
       this.updateScrollbar()
     },1000 + (Math.random() * 10) * 100)
   }
+
   SendLoad(ava:string):string{
     return`
     <div class="message loading new">

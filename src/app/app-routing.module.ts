@@ -3,9 +3,11 @@ import { HomeComponent } from './home/home.component';
 import { NgModule, OnInit } from '@angular/core';
 import { Router, RouterModule, Routes } from '@angular/router';
 import { ChatComponent } from './chat/chat.component';
+import { AuthGuard } from './_helpers';
 
 const routes: Routes = [
-  {path : 'chat/:username', component : ChatComponent},
+  {path: '', component: ChatComponent, canActivate: [AuthGuard] },
+ // {path : 'chat/:username', component : ChatComponent},
   {path : 'home', component : HomeComponent},
   {path : "login",component : LoginComponent}
 ];

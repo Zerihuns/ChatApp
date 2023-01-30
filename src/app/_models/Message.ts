@@ -5,4 +5,5 @@ export interface  Message {
   TypingState : boolean
   Msg : string
   Personal : boolean
+  Avatar? : string
 }

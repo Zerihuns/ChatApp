@@ -10,6 +10,9 @@ import { HomeComponent } from './home/home.component';
 import { MsgreplayDirective } from './chat/msgreplay.directive';
 import { TextareaAutoresizeDirectiveDirective } from './chat/textarea-autoresize-directive.directive';
 import { LoginComponent } from './login/login.component';
+import { HttpClientModule , HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor, ErrorInterceptor } from './_helpers';
+
 
 @NgModule({
   declarations: [
@@ -18,16 +21,19 @@ import { LoginComponent } from './login/login.component';
     HomeComponent,
     MsgreplayDirective,
     TextareaAutoresizeDirectiveDirective,
-    LoginComponent
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    CommonModule
+    CommonModule,
+    HttpClientModule
   ],
   providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     ChatService
   ],
   bootstrap: [AppComponent]
