@@ -49,6 +49,10 @@ export class ChatComponent  implements OnInit,AfterViewInit, OnDestroy{
 
   ngOnInit(): void {
 
+      if(!this.accountService.IsLogin()){
+        this.router.navigate(['/login']);
+      }
+
       let username = this.accountService.userValue?.username
       console.log("Active UserName : "+this.accountService.userValue?.username);
       if(username){
@@ -62,7 +66,9 @@ export class ChatComponent  implements OnInit,AfterViewInit, OnDestroy{
       }
 
   }
-
+  logout(){
+    this.accountService.logout();
+  }
   async insertMessage(...args: KeyboardEvent[]) {
     if (args.length > 0){
       if(!((args[0].key == "Enter" || args[0].keyCode == 10) && args[0].ctrlKey))

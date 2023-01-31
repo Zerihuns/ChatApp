@@ -37,13 +37,19 @@ export class AccountService {
               this.userSubject.next(user);
               return user;
           }));
+    }
+  IsLogin() : boolean {
+    if (localStorage.getItem("user") === null) {
+      return false;
+    }
+    return true;
   }
 
   logout() {
       // remove user from local storage and set current user to null
       localStorage.removeItem('user');
       this.userSubject.next(null);
-      this.router.navigate(['/account/login']);
+      this.router.navigate(['/login']);
   }
 
   register(user: User) {

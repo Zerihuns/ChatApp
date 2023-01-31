@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router,ActivatedRoute } from '@angular/router';
 import { AccountService } from '@app/_services';
@@ -11,7 +11,7 @@ import { first } from 'rxjs/operators';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
   form = new FormGroup({
     'username': new FormControl(),
     'password': new FormControl(),
@@ -30,6 +30,11 @@ export class LoginComponent {
 
 
     }
+  ngOnInit(): void {
+    if(this.accountService.IsLogin()){
+      this.router.navigate(['/']);
+    }
+  }
 
   get f() { return this.form.controls; }
 
