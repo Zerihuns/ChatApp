@@ -1,0 +1,20 @@
+<div class="chat">
+  <div class="users-title">
+    <div class="logout" (click)="logout()">
+      <img src="assets/logout.svg">
+    </div>
+  </div>
+  <div class="users-Container">
+    <ul class="list">
+      <li class="list-item" *ngFor="let user of users; let i = index" (click)="goToChat(user.userID)">
+        <div>
+          <img src="{{user.Avater}}" class="list-item-image">
+        </div>
+        <div class="list-item-content">
+          <h4>{{user.firstName}} </h4>
+          <p>{{user.username}}</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

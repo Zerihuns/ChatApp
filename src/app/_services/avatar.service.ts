@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
+import { User } from '@app/_models';
+import { ColorService } from './color.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AvatarService {
 
-  constructor() { }
+  constructor(
+    private _colorService : ColorService
+    ) {}
   //Generatr Avatar
  public GenerateAvatar(text:string, foregroundColor:string, backgroundColor:string):string {
   let canvas = document.createElement("canvas");
@@ -28,5 +32,12 @@ export class AvatarService {
   }
   return canvas.toDataURL("image/png");
 }
+  BuildAvatar(users:User[]){
+        users.forEach(user => user.Avater = this.GenerateAvatar(user.username[0],"white",this._colorService.GetRandomColor()))
+        return users
+  }
 
+  BuildWithUsername(username:string):void{
+
+  }
 }

@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { environment } from '@environments/environment';
 import { User } from '@app/_models';
+import { AvatarService } from './avatar.service';
 
 
 @Injectable({
@@ -16,7 +17,9 @@ export class AccountService {
 
   constructor(
       private router: Router,
-      private http: HttpClient
+      private http: HttpClient,
+      private _avatarService :AvatarService,
+
   ) {
       this.userSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('user')!));
       this.user = this.userSubject.asObservable();
@@ -33,6 +36,8 @@ export class AccountService {
               console.log("user :: " + JSON.stringify(response.data.user))
               let user : User = response.data.user;
               user.token = response.data.token
+              let buildUsername = user.username ?? ""
+              user.Avater = this._avatarService.GenerateAvatar(buildUsername[0], "white", "#009578")
               localStorage.setItem('user', JSON.stringify(user));
               this.userSubject.next(user);
               return user;
@@ -51,6 +56,8 @@ export class AccountService {
   logout() {
       // remove user from local storage and set current user to null
       localStorage.removeItem('user');
+      localStorage.removeItem('users');
+
       this.userSubject.next(null);
       this.router.navigate(['/login'], {
         skipLocationChange: true,

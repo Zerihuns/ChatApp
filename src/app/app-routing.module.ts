@@ -3,10 +3,12 @@ import { NgModule, OnInit } from '@angular/core';
 import { Router, RouterModule, Routes } from '@angular/router';
 import { ChatComponent } from './chat/chat.component';
 import { AuthGuard } from './_helpers';
+import { UsersComponent } from './users/users.component';
 
 const routes: Routes = [
-  {path: '', component: ChatComponent, canActivate: [AuthGuard] },
-  {path : "login",component : LoginComponent},
+  {path: '', component: UsersComponent, canActivate: [AuthGuard] },
+  {path: 'chat/:id', component: ChatComponent, canActivate: [AuthGuard] },
+  {path: "login",component : LoginComponent},
   // otherwise redirect to home
    { path: '**', redirectTo: '' }
 ];

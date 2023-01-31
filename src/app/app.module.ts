@@ -12,6 +12,7 @@ import { LoginComponent } from './login/login.component';
 import { HttpClientModule , HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import {NgToastModule} from 'ng-angular-popup';
+import { UsersComponent } from './users/users.component';
 
 @NgModule({
     declarations: [
@@ -20,6 +21,7 @@ import {NgToastModule} from 'ng-angular-popup';
         MsgreplayDirective,
         TextareaAutoresizeDirectiveDirective,
         LoginComponent,
+        UsersComponent,
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

@@ -1,12 +1,13 @@
-import { Role } from "./role";
 
 export class User {
-  userID?: number;
+  userID: number;
   firstName?: string;
   lastName?: string;
-  username?: string;
+  username: string;
+  Avater? : string;
   token?: string;
-  constructor(username:string){
+  constructor(username:string,id :number){
     this.username = username
+    this.userID = id
   }
 }

@@ -6,9 +6,6 @@ import { environment } from './../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-
-
-
 export class ChatService {
 
   public data?: string;
@@ -30,12 +27,15 @@ export class ChatService {
     this.registerOnServerEvents();
   }
 
-  async sendMessage(message : string) {
-   await this.hubConnection.invoke('SendMessage', this.username ,message);
+
+  async sendMessage(message : string, receiverUsername : string) {
+   await this.hubConnection.invoke('SendMessage', this.username,receiverUsername,message);
   }
+
   sendJoinMessage(username : string) {
   this.hubConnection.invoke("Register",username)
   }
+
   public StartConnection(username : string ) {
     this.hubConnection
     .start()

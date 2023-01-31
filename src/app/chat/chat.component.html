@@ -2,17 +2,15 @@
 
 <div class="chat">
   <div class="chat-title">
-    <h1>{{username}}</h1>
+    <h1>{{receiver?.firstName}}</h1>
     <h2>online</h2>
     <figure class="avatar">
-      <img src="{{userAvater}}" /></figure>
-      <div class="logout" (click)="logout()">
-        <img src="assets/logout.svg">
-      </div>
+      <img src={{receiver?.Avater}} /></figure>
+
   </div>
   <div class="messages">
     <div class="messages-content" #messagesbox>
-      <ng-container *ngFor="let Message of Messages">
+      <ng-container *ngFor="let Message of ActiveMessages">
         <div *ngIf="Message.Personal; else ReciveMessage" class="message new message-personal" appMsgreplay="Message.ID">{{Message?.Msg}}</div>
         <ng-template  #ReciveMessage>
           <div class="message new">
