@@ -31,9 +31,11 @@ export class LoginComponent implements OnInit{
 
     }
   ngOnInit(): void {
-    if(this.accountService.IsLogin()){
-      this.router.navigate(['/']);
-    }
+    console.log("Login load ")
+
+    // if(this.accountService.IsLogin()){
+    //   this.router.navigate(['/']);
+    // }
   }
 
   get f() { return this.form.controls; }

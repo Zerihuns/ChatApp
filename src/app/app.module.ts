@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ChatComponent } from './chat/chat.component';
 import { ChatService } from './chat/chat.service';
-import { HomeComponent } from './home/home.component';
 import { MsgreplayDirective } from './chat/msgreplay.directive';
 import { TextareaAutoresizeDirectiveDirective } from './chat/textarea-autoresize-directive.directive';
 import { LoginComponent } from './login/login.component';
@@ -18,7 +17,6 @@ import {NgToastModule} from 'ng-angular-popup';
     declarations: [
         AppComponent,
         ChatComponent,
-        HomeComponent,
         MsgreplayDirective,
         TextareaAutoresizeDirectiveDirective,
         LoginComponent,

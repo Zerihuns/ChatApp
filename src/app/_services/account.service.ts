@@ -38,18 +38,23 @@ export class AccountService {
               return user;
           }));
     }
-  IsLogin() : boolean {
-    if (localStorage.getItem("user") === null) {
-      return false;
+
+    IsLogin() : boolean {
+    const user = this.userValue;
+    if (user) {
+        // authorised so return true
+        return true;
     }
-    return true;
+    return false;
   }
 
   logout() {
       // remove user from local storage and set current user to null
       localStorage.removeItem('user');
       this.userSubject.next(null);
-      this.router.navigate(['/login']);
+      this.router.navigate(['/login'], {
+        skipLocationChange: true,
+      });
   }
 
   register(user: User) {

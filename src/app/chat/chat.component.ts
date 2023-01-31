@@ -48,10 +48,13 @@ export class ChatComponent  implements OnInit,AfterViewInit, OnDestroy{
   }
 
   ngOnInit(): void {
+    console.log("Chat componet load ")
 
-      if(!this.accountService.IsLogin()){
-        this.router.navigate(['/login']);
-      }
+      // if(!this.accountService.IsLogin()){
+      //   this.router.navigate(['/login'], {
+      //     skipLocationChange: true,
+      //   });
+      // }
 
       let username = this.accountService.userValue?.username
       console.log("Active UserName : "+this.accountService.userValue?.username);
@@ -61,8 +64,9 @@ export class ChatComponent  implements OnInit,AfterViewInit, OnDestroy{
         this._chatService.StartConnection(username);
       }else{
         console.log("Username unknown")
-        this.router.navigate(['/home'])
-
+        this.router.navigate(['/login'], {
+          skipLocationChange: true,
+        });
       }
 
   }
