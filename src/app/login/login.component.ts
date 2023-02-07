@@ -11,7 +11,7 @@ import { first } from 'rxjs/operators';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent {
   form = new FormGroup({
     'username': new FormControl(),
     'password': new FormControl(),
@@ -30,13 +30,6 @@ export class LoginComponent implements OnInit{
 
 
     }
-  ngOnInit(): void {
-    console.log("Login load ")
-
-    // if(this.accountService.IsLogin()){
-    //   this.router.navigate(['/']);
-    // }
-  }
 
   get f() { return this.form.controls; }
 
@@ -65,5 +58,4 @@ export class LoginComponent implements OnInit{
               }
           });
   }
-
 }

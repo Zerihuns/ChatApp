@@ -1,4 +1,3 @@
-import { ChatService } from './chat.service';
 import {
   AfterViewInit, Component,
   ElementRef,
@@ -11,6 +10,7 @@ import { MsgreplayDirective } from './msgreplay.directive';
 import { AccountService } from '@app/_services';
 import { User } from '@app/_models';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { ChatService } from '@app/_services/chat.service';
 
 
 @Component({
@@ -65,22 +65,16 @@ export class ChatComponent  implements OnInit,AfterViewInit, OnDestroy{
         return
     }
     if (this.inputMessage) {
-
-      this.AllMessages.push({
+      let newMessage:Message = {
         Username: this.username,
         Msg: this.inputMessage,
         TypingState: false,
         Personal: true,
         Avatar : ""
-      });
+      }
 
-      this.ActiveMessages.push({
-        Username: this.username,
-        Msg: this.inputMessage,
-        TypingState: false,
-        Personal: true,
-        Avatar : ""
-      })
+      this.AllMessages.push(newMessage);
+      this.ActiveMessages.push(newMessage)
 
       try {
         await this._chatService.sendMessage(this.inputMessage,this.receiver?.username??'');
@@ -101,24 +95,22 @@ export class ChatComponent  implements OnInit,AfterViewInit, OnDestroy{
   private subscribeToEvents(): void {
     this._chatService.messageReceived.subscribe((message: Message) => {
       this._ngZone.run(() => {
-
         this.sendMessageWithLoadding(message.Msg,message.Username)
-        console.log(message)
+        console.log("Message From Server : " + message.Msg)
       });
     });
   }
 
   sendMessageWithLoadding(msg : string,username : string){
-
-
-    this.AllMessages.push({
+    let newMessage:Message = {
       Username: username,
       TypingState: false,
       Msg: msg,
       Personal: false,
       Avatar : this._avatarService.GenerateAvatar(username[0], "white", "#009578")
+    }
 
-    })
+    this.AllMessages.push(newMessage)
 
     if (this.receiver?.username === username){
       let elemnt = this.elementRef.nativeElement.querySelector('.messages-content');
@@ -128,15 +120,7 @@ export class ChatComponent  implements OnInit,AfterViewInit, OnDestroy{
 
         let load = this.elementRef.nativeElement.querySelector('.message.loading');
         load.remove()
-        this.updateScrollbar()
-
-        this.ActiveMessages.push({
-          Username: username,
-          TypingState: false,
-          Msg: msg,
-          Personal: false,
-          Avatar : this._avatarService.GenerateAvatar(username[0], "white", "#009578")
-        })
+        this.ActiveMessages.push(newMessage)
         this.updateScrollbar()
       },1000 + (Math.random() * 10) * 100)
     }
